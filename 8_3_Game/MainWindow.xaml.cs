@@ -51,23 +51,29 @@ public partial class MainWindow : Window
 
     private void UpdateGame()
     {
-        if (isMovingLeft)
+        if (isMovingLeft && !Player.IsCollidingToWall())
         {
+
             Ground1.StepRight(10);
+            Ground2.StepRight(10);
+
         }
 
-        if (isMovingRight)
+        if (isMovingRight && !Player.IsCollidingToWall())
         {
             Ground1.StepLeft(10);
+            Ground2.StepLeft(10);
         }
 
-        if (ismovingUp)
+        if (ismovingUp && !Player.IsCollidingToWall())
         {
             Ground1.StepDown(10);
+            Ground2.StepDown(10);
         }
-        if (ismovingDown)
+        if (ismovingDown && !Player.IsCollidingToWall())
         {
             Ground1.StepUp(10);
+            Ground2.StepUp(10);
         }
 
     }

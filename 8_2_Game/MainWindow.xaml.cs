@@ -21,6 +21,7 @@ public partial class MainWindow : Window
     private bool isMovingLeft = false;
     private bool isMovingRight = false;
     private bool isJumping = false;
+    private bool attack = false;
 
 
     public MainWindow()
@@ -37,11 +38,13 @@ public partial class MainWindow : Window
         GameHelper.RegisterKeyDownAction(Key.Left, () => isMovingLeft = true);
         GameHelper.RegisterKeyDownAction(Key.Right, () => isMovingRight = true);
         GameHelper.RegisterKeyDownAction(Key.Space, () => isJumping = true);
+        GameHelper.RegisterKeyDownAction(Key.S, () => attack = true);
 
 
         GameHelper.RegisterKeyUpAction(Key.Left, () => isMovingLeft = false);
         GameHelper.RegisterKeyUpAction(Key.Right, () => isMovingRight = false);
         GameHelper.RegisterKeyUpAction(Key.Space, () => isJumping = false);
+        GameHelper.RegisterKeyUpAction(Key.S, () => attack = false);
     }
 
 
@@ -71,6 +74,13 @@ public partial class MainWindow : Window
         if (isJumping)
         {
             Pikachu.Jump(20, 20);
+        }
+
+        double x = GameHelper.GetRandomNumber(1, 10);
+
+        if (attack)
+        {
+            Pikachu.Shoot(energy, "shoot",5, Direction.Right);
         }
     }
 }

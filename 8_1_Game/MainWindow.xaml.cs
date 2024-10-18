@@ -42,6 +42,7 @@ public partial class MainWindow : Window
         GameHelper.RegisterKeyDownAction(Key.S, () => Player.MoveDown(stepSize));
         GameHelper.RegisterKeyDownAction(Key.A, () => Player.MoveLeft(stepSize));
         GameHelper.RegisterKeyDownAction(Key.D, () => Player.MoveRight(stepSize));
+
         GameHelper.RegisterKeyUpAction(Key.W, () => Player.Stop());
         GameHelper.RegisterKeyUpAction(Key.S, () => Player.Stop());
         GameHelper.RegisterKeyUpAction(Key.A, () => Player.Stop());
@@ -51,6 +52,27 @@ public partial class MainWindow : Window
 
     private void UpdateGame()
     {
+        if(Player.IsColliding(Enemy))
+        {
+            Player.SetPosition(new Point(50, 50));
+        }
+        if(Player.IsColliding(Coin1))
+        {
+            Coin1.Visibility = Visibility.Hidden;
+        }
+        if (Player.IsColliding(Coin2))
+        {
+            Coin2.Visibility = Visibility.Hidden;
+        }
+        if (Player.IsColliding(Coin3))
+        {
+            Coin3.Visibility = Visibility.Hidden;
+        }
+
+        if(Player.IsTagCollidingWithRemove("coin"))
+        {
+
+        }
 
     }
 }

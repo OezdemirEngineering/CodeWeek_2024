@@ -125,6 +125,22 @@ namespace Game
             return new Point(Canvas.GetLeft(obj), Canvas.GetTop(obj));
         }
 
+
+        //write a static method that sets only the y position 
+        public static void SetXPostion(this UIElement obj, int x)
+        {
+            Canvas.SetLeft(obj, x);
+        }
+        public static void SetYPostion(this UIElement obj, int y)
+        {
+            Canvas.SetTop(obj, y);
+        }
+
+        public static void SetPosition(this UIElement obj, double x, double y)
+        {
+            SetPosition(obj, new Point(x, y));
+        }
+
         public static void SetPosition(this UIElement obj, Point xy)
         {
             Canvas.SetLeft(obj, xy.X);

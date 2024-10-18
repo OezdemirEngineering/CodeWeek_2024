@@ -9,7 +9,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Canvas Name="GameField">
         <Image x:Name="Pikachu" gif:ImageBehavior.AnimatedSource="/Images/Pikachu.gif" Tag="object" gif:ImageBehavior.RepeatBehavior="1x" gif:ImageBehavior.AnimationSpeedRatio="0.90"  Height="103" Canvas.Left="61"  Canvas.Top="206" Width="145" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <Image x:Name="energy" gif:ImageBehavior.AnimatedSource="/Images/energyBall.gif" Tag="object" gif:ImageBehavior.RepeatBehavior="0x" gif:ImageBehavior.AnimationSpeedRatio="1.00"  Height="75" Canvas.Left="-311"  Canvas.Top="150" Width="141"/>
+        <Image x:Name="energy" gif:ImageBehavior.AnimatedSource="/Images/energyBall.gif" Tag="object" gif:ImageBehavior.RepeatBehavior="0x" gif:ImageBehavior.AnimationSpeedRatio="1.00"  Height="75" Canvas.Left="-368"  Canvas.Top="191" Width="141"/>
         <Rectangle x:Name="Ground1" Tag="wall" Height="100" Stroke="Black" Canvas.Left="0" Canvas.Top="341" Width="800" HorizontalAlignment="Left" VerticalAlignment="Center" />
     </Canvas>
 </Window>

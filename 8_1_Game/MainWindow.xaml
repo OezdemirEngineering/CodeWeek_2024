@@ -10,6 +10,12 @@
     <Canvas Name="GameField">
         <Rectangle Name="Ground" Height="50" Tag="wall" Stroke="Black" Canvas.Top="381" Canvas.Left="0" Width="800"/>
         <Rectangle Name="Player"  Tag="object" Stroke="Black" Canvas.Top="180" Width="50" Height="50" Canvas.Left="375" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Rectangle Name="Enemy" Height="100" Canvas.Left="540" Stroke="Black" Canvas.Top="205" Width="100"/>
+        <Rectangle Name="Coin1" Height="34" Canvas.Left="115" Stroke="Black" Canvas.Top="86" Width="38"/>
+        <Rectangle x:Name="Coin2" Height="34" Canvas.Left="485" Stroke="Black" Canvas.Top="69" Width="38" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Rectangle x:Name="Coin3" Height="34" Canvas.Left="273" Stroke="Black" Canvas.Top="304" Width="38" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Rectangle  Height="34"  Tag ="coin" Canvas.Left="134" Stroke="Black" Canvas.Top="238" Width="38" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Rectangle  Height="34" Tag="coin" Canvas.Left="189" Stroke="Black" Canvas.Top="188" Width="38" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
     </Canvas>
 </Window>
