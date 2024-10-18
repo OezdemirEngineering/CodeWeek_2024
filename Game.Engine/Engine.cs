@@ -19,6 +19,8 @@ namespace Game
         public static double FallStepSize { get; set; } = 10;
         private static DispatcherTimer _frameRate;
 
+        private static UIElement mainPlayer;
+
         private static Random _random;
 
         private static Canvas _gameField;
@@ -26,6 +28,8 @@ namespace Game
         private static List<JumpStateDto> _jumpStates;
         private static List<MoveDto> _moveStates;
         private static bool _isJumpAndRun;
+
+        private static bool _fixedPlayer;
 
         private static Dictionary<Key, Action> _keyDownActions = new Dictionary<Key, Action>();
         private static Dictionary<Key, Action> _keyUpActions = new Dictionary<Key, Action>();
@@ -68,7 +72,7 @@ namespace Game
             }
         }
 
-        public static void Init(this Canvas gameField, int frameRate = 1, Action updateGame = null, bool isJumpAndRun = false)
+        public static void Init(this Canvas gameField, int frameRate = 1, Action updateGame = null, bool isJumpAndRun = false, bool fixedPlayer = false)
         {
             InitializeFields(gameField, frameRate, isJumpAndRun);
             InitializeGameStates();
@@ -76,11 +80,14 @@ namespace Game
 
             gameField.KeyDown += GameHelper.HandleKeyDown;
             gameField.KeyUp += GameHelper.HandleKeyUp;
+
+            _fixedPlayer = fixedPlayer;
         }
 
         public static void InitPlayer(this UIElement obj)
         {
             Jump(obj, 0, 0);
+            mainPlayer = obj;
         }
 
         private static void InitializeFields(Canvas gameField, int frameRate, bool isJumpAndRun)
@@ -149,85 +156,212 @@ namespace Game
 
         public static bool StepDown(this UIElement obj, double steps)
         {
-            var currentPosition = GetPosition(obj);
-            var newPosition = new Point(currentPosition.X, currentPosition.Y + steps);
-            SetPosition(obj, newPosition);
 
-            if (IsCollidingToWall(obj))
+            var wallHitBoxes = _gameField.Children.OfType<UIElement>().Where(uie => uie.GetTag() == "wall").Select(uie => uie.GetHitBox()).ToList();
+
+            if (_fixedPlayer)
             {
-                SetPosition(obj, currentPosition);
+                for (int i = 0; i < wallHitBoxes.Count; i++)
+                {
+                    wallHitBoxes[i] = new Rect(wallHitBoxes[i].X, wallHitBoxes[i].Y + steps, wallHitBoxes[i].Width, wallHitBoxes[i].Height);
+                }
+                var collisions = wallHitBoxes.Where(wallHitBox => wallHitBox.IntersectsWith(mainPlayer.GetHitBox())).ToList();
+                if (collisions.Count > 0)
+                {
+                    return true;
+                }
+
+
+                foreach (var item in _moveStates.Where(it => it.Object.GetTag() == "wall"))
+                {
+                    var pos = item.Object.GetPosition();
+
+                    Point newPos = new Point(pos.X, pos.Y + steps);
+                    SetPosition(item.Object, newPos);
+                }
+                return false;
+            }
+
+            Point currentPosition = GetPosition(obj);
+            Point newPosition = new Point(currentPosition.X, currentPosition.Y + steps);
+            Rect rect = new Rect(newPosition.X, newPosition.Y, obj.GetHitBox().Width, obj.GetHitBox().Height);
+
+            if (wallHitBoxes.Any(wallHitBox => wallHitBox.IntersectsWith(rect)))
+            {
                 return true;
             }
+
+            SetPosition(obj, newPosition);
 
             return false;
         }
 
         public static bool StepUp(this UIElement obj, double steps)
         {
+            var wallHitBoxes = _gameField.Children.OfType<UIElement>().Where(uie => uie.GetTag() == "wall").Select(uie => uie.GetHitBox()).ToList();
+
+            if (_fixedPlayer)
+            {
+                for (int i = 0; i < wallHitBoxes.Count; i++)
+                {
+                    wallHitBoxes[i] = new Rect(wallHitBoxes[i].X, wallHitBoxes[i].Y - steps, wallHitBoxes[i].Width, wallHitBoxes[i].Height);
+                }
+                var collisions = wallHitBoxes.Where(wallHitBox => wallHitBox.IntersectsWith(mainPlayer.GetHitBox())).ToList();
+                if (collisions.Count > 0)
+                {
+                    return true;
+                }
+
+                foreach (var item in _moveStates.Where(it => it.Object.GetTag() == "wall"))
+                {
+                    var pos = item.Object.GetPosition();
+
+                    Point newPos = new Point(pos.X, pos.Y - steps);
+                    SetPosition(item.Object, newPos);
+                }
+                return false;
+            }
+
             Point currentPosition = GetPosition(obj);
             Point newPosition = new Point(currentPosition.X, currentPosition.Y - steps);
-            SetPosition(obj, newPosition);
+            Rect rect = new Rect(newPosition.X, newPosition.Y, obj.GetHitBox().Width, obj.GetHitBox().Height);
 
-            if (IsCollidingToWall(obj))
+            if (wallHitBoxes.Any(wallHitBox => wallHitBox.IntersectsWith(rect)))
             {
-                SetPosition(obj, currentPosition);
                 return true;
             }
+            SetPosition(obj, newPosition);
 
             return false;
         }
 
         public static bool StepRight(this UIElement obj, double steps)
         {
-            Point xy = GetPosition(obj);
-            xy.X += steps;
-            SetPosition(obj, xy);
-            bool isColliding = IsCollidingToWall(obj);
 
-            if (isColliding)
+            var wallHitBoxes = _gameField.Children.OfType<UIElement>().Where(uie => uie.GetTag() == "wall").Select(uie => uie.GetHitBox()).ToList();
+
+            if (_fixedPlayer)
             {
-                xy.X -= steps;
-                SetPosition(obj, xy);
+                for (int i = 0; i < wallHitBoxes.Count; i++)
+                {
+                    wallHitBoxes[i] = new Rect(wallHitBoxes[i].X + steps, wallHitBoxes[i].Y, wallHitBoxes[i].Width, wallHitBoxes[i].Height);
+                }
+                var collisions = wallHitBoxes.Where(wallHitBox => wallHitBox.IntersectsWith(mainPlayer.GetHitBox())).ToList();
+                if (collisions.Count > 0)
+                {
+                    return true;
+                }
+
+                foreach (var item in _moveStates.Where(it => it.Object.GetTag() == "wall"))
+                {
+                    var pos = item.Object.GetPosition();
+
+                    Point newPos = new Point(pos.X + steps, pos.Y);
+                    SetPosition(item.Object, newPos);
+                }
+                return false;
             }
 
-            return isColliding;
+            Point currentPosition = GetPosition(obj);
+            Point newPosition = new Point(currentPosition.X +steps, currentPosition.Y);
+            Rect rect = new Rect(newPosition.X + steps, newPosition.Y, obj.GetHitBox().Width, obj.GetHitBox().Height);
+
+            if (wallHitBoxes.Any(wallHitBox => wallHitBox.IntersectsWith(rect)))
+            {
+                return true;
+            }
+            SetPosition(obj, newPosition);
+
+            return false;
         }
 
         public static bool StepLeft(this UIElement obj, double steps)
         {
-            Point xy = GetPosition(obj);
-            xy.X -= steps;
-            SetPosition(obj, xy);
-            bool isColliding = IsCollidingToWall(obj);
-
-            if (isColliding)
+            var wallHitBoxes = _gameField.Children.OfType<UIElement>().Where(uie => uie.GetTag() == "wall").Select(uie => uie.GetHitBox()).ToList();
+            if (_fixedPlayer)
             {
-                xy.X += steps;
-                SetPosition(obj, xy);
+                for (int i = 0; i < wallHitBoxes.Count; i++)
+                {
+                    wallHitBoxes[i] = new Rect(wallHitBoxes[i].X - steps, wallHitBoxes[i].Y, wallHitBoxes[i].Width, wallHitBoxes[i].Height);
+                }
+                var collisions = wallHitBoxes.Where(wallHitBox => wallHitBox.IntersectsWith(mainPlayer.GetHitBox())).ToList();
+                if (collisions.Count > 0)
+                {
+                    return true;
+                }
+
+
+                foreach (var item in _moveStates.Where(it => it.Object.GetTag() == "wall"))
+                {
+                    var pos = item.Object.GetPosition();
+
+                    Point newPos = new Point(pos.X - steps, pos.Y);
+                    SetPosition(item.Object, newPos);
+                }
+                return false;
             }
 
-            return isColliding;
+            Point currentPosition = GetPosition(obj);
+            Point newPosition = new Point(currentPosition.X - steps, currentPosition.Y);
+            Rect rect = new Rect(newPosition.X - steps, newPosition.Y, obj.GetHitBox().Width, obj.GetHitBox().Height);
+
+            if (wallHitBoxes.Any(wallHitBox => wallHitBox.IntersectsWith(rect)))
+            {
+                return true;
+            }
+            SetPosition(obj, newPosition);
+
+            return false;
+
         }
 
 
         public static void MoveDown(this UIElement obj, double speed)
         {
-            StartMoving(obj, speed, Direction.Down);
+            if (_fixedPlayer)
+            {
+                MoveTagsToTop("wall", speed);
+            }
+            else
+            {
+                StartMoving(obj, speed, Direction.Down);
+            }
         }
-  
+
         public static void MoveUp(this UIElement obj, double speed)
         {
-            StartMoving(obj, speed, Direction.Up);
+            if (_fixedPlayer)
+            {
+                MoveTagsToBottom("wall", speed);
+            }
+            else
+            {
+                StartMoving(obj, speed, Direction.Up);
+            }
         }
 
         public static void MoveLeft(this UIElement obj, double speed)
         {
-            StartMoving(obj, speed, Direction.Left);
+            if (_fixedPlayer)
+            {
+                MoveTagsToRight("wall", speed);
+            }
+            else
+            {
+                StartMoving(obj, speed, Direction.Left);
+            }
         }
 
         public static void MoveRight(this UIElement obj, double speed)
         {
-            StartMoving(obj, speed, Direction.Right);
+            if (_fixedPlayer)
+            {
+                MoveTagsToLeft("wall", speed);
+            }
+            else
+            {
+                StartMoving(obj, speed, Direction.Right);
+            }
         }
 
         public static void StartMoving(this UIElement obj, double speed, Direction direction)
@@ -258,6 +392,19 @@ namespace Game
 
         public static void Stop(this UIElement obj)
         {
+            if (_fixedPlayer)
+            {
+                _moveStates.Where(p => p.Object.GetTag() == "wall").ToList().ForEach(move =>
+                {
+                    move.Speed = 0;
+                    move.IsMovingLeft = false;
+                    move.IsMovingRight = false;
+                    move.IsMovingUp = false;
+                    move.IsMovingDown = false;
+                });
+            }
+
+
             if (!_moveStates.Exists(p => p.Object == obj))
             {
                 _moveStates.Add(new MoveDto(obj, 0));
@@ -304,6 +451,7 @@ namespace Game
                     jumper.SetFall();
                 }
 
+                // Todo - Fix it for fixed player 
                 if (jumper.IsFalling())
                 {
                     if (StepDown(jumper.Player, FallStepSize))
@@ -556,7 +704,7 @@ namespace Game
             {
                 if (GetTag(child) == tag)
                 {
-                    StepLeft(child, step);
+                    StartMoving(child, step, Direction.Left);
                 }
             }
         }
@@ -567,7 +715,7 @@ namespace Game
             {
                 if (GetTag(child) == tag)
                 {
-                    StepRight(child, step);
+                    StartMoving(child, step, Direction.Right);
                 }
             }
         }
@@ -578,7 +726,7 @@ namespace Game
             {
                 if (GetTag(child) == tag)
                 {
-                    StepUp(child, step);
+                    StartMoving(child, step, Direction.Up);
                 }
             }
         }
@@ -589,7 +737,7 @@ namespace Game
             {
                 if (GetTag(child) == tag)
                 {
-                    StepDown(child, step);
+                    StartMoving(child, step, Direction.Down);
                 }
             }
         }

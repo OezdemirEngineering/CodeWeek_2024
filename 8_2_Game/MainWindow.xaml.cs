@@ -35,53 +35,21 @@ public partial class MainWindow : Window
 
     private void RegisterKeys()
     {
-        GameHelper.RegisterKeyDownAction(Key.Left, () => isMovingLeft = true);
-        GameHelper.RegisterKeyDownAction(Key.Right, () => isMovingRight = true);
-        GameHelper.RegisterKeyDownAction(Key.Space, () => isJumping = true);
-        GameHelper.RegisterKeyDownAction(Key.S, () => attack = true);
+        GameHelper.RegisterKeyDownAction(Key.Left, () => { Pikachu.MoveLeft(10);Pikachu.StartAnimation();Pikachu.MirrorRight(); });
+        GameHelper.RegisterKeyDownAction(Key.Right, () => { Pikachu.MoveRight(10); Pikachu.StartAnimation();Pikachu.MirrorLeft(); });
+        GameHelper.RegisterKeyDownAction(Key.Space, () => Pikachu.Jump(20, 10));
+        GameHelper.RegisterKeyDownAction(Key.S, () => Pikachu.Shoot(energy,"shoot",10,Direction.Left));
 
 
-        GameHelper.RegisterKeyUpAction(Key.Left, () => isMovingLeft = false);
-        GameHelper.RegisterKeyUpAction(Key.Right, () => isMovingRight = false);
-        GameHelper.RegisterKeyUpAction(Key.Space, () => isJumping = false);
+        GameHelper.RegisterKeyUpAction(Key.Left, () => { Pikachu.Stop();Pikachu.StopAnimation(); });
+        GameHelper.RegisterKeyUpAction(Key.Right, () => { Pikachu.Stop(); Pikachu.StopAnimation(); });
+
         GameHelper.RegisterKeyUpAction(Key.S, () => attack = false);
     }
 
 
     private void UpdateGame()
     {
-        if (isMovingLeft)
-        {
-            Ground1.MoveRight(10);
-            Pikachu.StartAnimation();
-            Pikachu.MirrorRight();
-        }
-
-        if (isMovingRight)
-        {
-            Ground1.MoveLeft(10);
-            Pikachu.StartAnimation();
-            Pikachu.MirrorLeft();
-        }
-
-        if (!isMovingLeft && !isMovingRight)
-        {
-            Ground1.Stop();
-            Pikachu.Stop();
-            Pikachu.StopAnimation();  // Stop animation when no movement
-        }
-
-        if (isJumping)
-        {
-            Pikachu.Jump(20, 20);
-        }
-
-        double x = GameHelper.GetRandomNumber(1, 10);
-
-        if (attack)
-        {
-            Pikachu.Shoot(energy, "shoot",5, Direction.Right);
-        }
     }
 }
 

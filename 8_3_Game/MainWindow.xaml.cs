@@ -25,9 +25,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        GameField.Init(frameRate: 1, UpdateGame, isJumpAndRun: false);
+        GameField.Init(frameRate: 1, UpdateGame, isJumpAndRun: false, fixedPlayer: true);
         Player.InitPlayer();
-
 
         // Keys Registieren
         RegisterKeys();
@@ -35,46 +34,20 @@ public partial class MainWindow : Window
 
     private void RegisterKeys()
     {
-        GameHelper.RegisterKeyDownAction(Key.Left, () => isMovingLeft = true);
-        GameHelper.RegisterKeyDownAction(Key.Right, () => isMovingRight = true);
-        GameHelper.RegisterKeyDownAction(Key.Up, () => ismovingUp = true);
-        GameHelper.RegisterKeyDownAction(Key.Down, () => ismovingDown = true);
+        GameHelper.RegisterKeyDownAction(Key.Left, ()=>Player.MoveLeft(10));
+        GameHelper.RegisterKeyDownAction(Key.Right, () => Player.MoveRight(10));
+        GameHelper.RegisterKeyDownAction(Key.Up, () =>Player.MoveUp(10));
+        GameHelper.RegisterKeyDownAction(Key.Down, () => Player.MoveDown(10));
 
-
-
-        GameHelper.RegisterKeyUpAction(Key.Left, () => isMovingLeft = false);
-        GameHelper.RegisterKeyUpAction(Key.Right, () => isMovingRight = false);
-        GameHelper.RegisterKeyUpAction(Key.Up, () => ismovingUp = false);
-        GameHelper.RegisterKeyUpAction(Key.Down, () => ismovingDown = false);
+        GameHelper.RegisterKeyUpAction(Key.Left, () => Player.Stop());
+        GameHelper.RegisterKeyUpAction(Key.Right, () => Player.Stop());
+        GameHelper.RegisterKeyUpAction(Key.Up, () => Player.Stop());
+        GameHelper.RegisterKeyUpAction(Key.Down, () => Player.Stop());
 
     }
 
     private void UpdateGame()
     {
-        if (isMovingLeft && !Player.IsCollidingToWall())
-        {
-
-            Ground1.StepRight(10);
-            Ground2.StepRight(10);
-
-        }
-
-        if (isMovingRight && !Player.IsCollidingToWall())
-        {
-            Ground1.StepLeft(10);
-            Ground2.StepLeft(10);
-        }
-
-        if (ismovingUp && !Player.IsCollidingToWall())
-        {
-            Ground1.StepDown(10);
-            Ground2.StepDown(10);
-        }
-        if (ismovingDown && !Player.IsCollidingToWall())
-        {
-            Ground1.StepUp(10);
-            Ground2.StepUp(10);
-        }
 
     }
 

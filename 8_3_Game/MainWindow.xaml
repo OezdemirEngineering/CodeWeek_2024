@@ -9,7 +9,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Canvas Name="GameField">
         <Rectangle x:Name="Ground1" Tag="wall" Height="100" Stroke="Black" Canvas.Left="0" Canvas.Top="341" Width="800" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <Rectangle Name="Player"  Tag="object" Stroke="Black" Canvas.Top="180" Width="50" Height="50" Canvas.Left="375" HorizontalAlignment="Center" VerticalAlignment="Top" />
-        <Rectangle x:Name="Ground2" Tag="wall" Height="100" Stroke="Black" Canvas.Left="714" Canvas.Top="130" Width="800" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Rectangle Name="Player"  Tag="object" Stroke="Black" Canvas.Top="281" Width="50" Height="50" Canvas.Left="375" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Rectangle x:Name="Ground1_Copy" Tag="wall" Height="100" Stroke="Black" Canvas.Left="965" Canvas.Top="341" Width="800" HorizontalAlignment="Left" VerticalAlignment="Center" />
     </Canvas>
 </Window>
