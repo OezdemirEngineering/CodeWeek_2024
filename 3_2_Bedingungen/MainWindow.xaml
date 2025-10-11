@@ -6,7 +6,5 @@
         xmlns:local="clr-namespace:_3_2_Bedingungen"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+    <Canvas x:Name="GameField" Background="Black" Focusable="True"/>
 </Window>

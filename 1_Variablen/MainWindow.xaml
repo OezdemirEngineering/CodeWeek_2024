@@ -4,9 +4,57 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_1_Variablen"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+    <Canvas Name="GameField">
+        <Canvas.Background>
+            <RadialGradientBrush>
+                <GradientStop Color="#FFE6E5E6" Offset="0"/>
+                <GradientStop Color="#FFD49CDA" Offset="1"/>
+            </RadialGradientBrush>
+        </Canvas.Background>
+        <Image x:Name="Kirby" Source="/Kirby/kirby.gif" Tag="object" gif:ImageBehavior.RepeatBehavior="1x" gif:ImageBehavior.AnimationSpeedRatio="0.90"  Height="344" Canvas.Left="204"  Canvas.Top="70" Width="360" HorizontalAlignment="Center" VerticalAlignment="Center" gif:ImageBehavior.AutoStart="False"/>
+        <Button x:Name="Feed" Content="Feed" Width="200" Height="35" Canvas.Left="284" Canvas.Top="336" Click="StartButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                    CornerRadius="15"
+                    BorderBrush="Transparent"
+                    BorderThickness="0">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.BorderBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <LinearGradientBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                            <SkewTransform CenterX="0.5" CenterY="0.5"/>
+                            <RotateTransform Angle="130" CenterX="0.5" CenterY="0.5"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </LinearGradientBrush.RelativeTransform>
+                    <GradientStop Color="#FFF96093"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.BorderBrush>
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.8">
+                    <LinearGradientBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                            <SkewTransform CenterX="0.5" CenterY="0.5"/>
+                            <RotateTransform Angle="30" CenterX="0.5" CenterY="0.5"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </LinearGradientBrush.RelativeTransform>
+                    <GradientStop Color="#FFCB426F"/>
+                    <GradientStop Color="#FFFF99CC" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+    </Canvas>
 </Window>

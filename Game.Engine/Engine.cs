@@ -475,6 +475,15 @@ public static class GameHelper
         {
             hitBox = new Rect(xy.X, xy.Y, ellipse.Width, ellipse.Height);
         }
+        else if (obj is System.Windows.Shapes.Path path)
+        {
+            // Use Width/Height for Path, assuming it's set and matches the visual bounds
+            hitBox = new Rect(xy.X, xy.Y, path.Width, path.Height);
+        }
+        else if (obj is Canvas canvas)
+        {
+            hitBox = new Rect(xy.X, xy.Y, canvas.ActualWidth, canvas.ActualHeight);
+        }
         else
         {
             hitBox = new Rect(xy.X, xy.Y, ((Image)obj).Width, ((Image)obj).Height);
