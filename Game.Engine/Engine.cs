@@ -379,14 +379,31 @@ public static class GameHelper
             // Todo - Fix it for fixed player 
             if (jumper.IsFalling())
             {
-                if (StepDown(jumper.Player, FallStepSize))
-                    jumper.MakeReady();
+                if (_fixedPlayer)
+                {
+                    // In fixed player mode, move the world down (scroll up) instead of the player falling
+                    if (StepUp(mainPlayer, FallStepSize))
+                        jumper.MakeReady();
+                }
+                else
+                {
+                    if (StepDown(jumper.Player, FallStepSize))
+                        jumper.MakeReady();
+                }
                 continue;
             }
 
             if (jumper.IsJumping())
             {
-                StepUp(jumper.Player, jumper.Speed);
+                if (_fixedPlayer)
+                {
+                    // In fixed player mode, move the world up (scroll down) instead of the player jumping
+                    StepDown(mainPlayer, jumper.Speed);
+                }
+                else
+                {
+                    StepUp(jumper.Player, jumper.Speed);
+                }
             }
         }
     }

@@ -37,7 +37,7 @@ public partial class MainWindow : Window
     {
         GameHelper.RegisterKeyDownAction(Key.Left, () => { Pikachu.MoveLeft(10);Pikachu.StartAnimation();Pikachu.MirrorRight(); });
         GameHelper.RegisterKeyDownAction(Key.Right, () => { Pikachu.MoveRight(10); Pikachu.StartAnimation();Pikachu.MirrorLeft(); });
-        GameHelper.RegisterKeyDownAction(Key.Space, () => Pikachu.Jump(20, 10));
+        GameHelper.RegisterKeyDownAction(Key.Space, () => Pikachu.Jump(20, 20));
         GameHelper.RegisterKeyDownAction(Key.S, () => Pikachu.Shoot(energy,"shoot",10,Direction.Left));
 
 
@@ -50,6 +50,33 @@ public partial class MainWindow : Window
 
     private void UpdateGame()
     {
+        // Endless ground scrolling logic for "ground1" and "ground2"
+        double groundWidth = Ground1.RenderSize.Width;
+        double canvasWidth = GameField.ActualWidth;
+
+        // --- Move right-to-left (already implemented) ---
+        if (GameHelper.GetPosition(Ground1).X + groundWidth < 0)
+        {
+            double newX = GameHelper.GetPosition(Ground2).X + groundWidth;
+            GameHelper.SetPosition(Ground1, newX, GameHelper.GetPosition(Ground1).Y);
+        }
+        if (GameHelper.GetPosition(Ground2).X + groundWidth < 0)
+        {
+            double newX = GameHelper.GetPosition(Ground1).X + groundWidth;
+            GameHelper.SetPosition(Ground2, newX, GameHelper.GetPosition(Ground2).Y);
+        }
+
+        // --- Move left-to-right (for endless run in the other direction) ---
+        if (GameHelper.GetPosition(Ground1).X > canvasWidth)
+        {
+            double newX = GameHelper.GetPosition(Ground2).X - groundWidth;
+            GameHelper.SetPosition(Ground1, newX, GameHelper.GetPosition(Ground1).Y);
+        }
+        if (GameHelper.GetPosition(Ground2).X > canvasWidth)
+        {
+            double newX = GameHelper.GetPosition(Ground1).X - groundWidth;
+            GameHelper.SetPosition(Ground2, newX, GameHelper.GetPosition(Ground2).Y);
+        }
     }
 }
 
