@@ -17,41 +17,194 @@ namespace _8_3_Game;
 /// </summary>
 public partial class MainWindow : Window
 {
+    // Movement state flags
     private bool isMovingLeft = false;
     private bool isMovingRight = false;
-    private bool ismovingUp = false;
-    private bool ismovingDown = false;
+    private bool isMovingUp = false;
+    private bool isMovingDown = false;
+
+    private BitmapImage spriteSheet;
+
+    // Sprite animation state
+    private enum FaceDir { Down, Up, Left, Right }
+    private FaceDir currentDirection = FaceDir.Down;
+    private int currentFrameIndex = 0; // per-direction frame index
+    private int frameTick = 0;
+    private const int ticksPerFrame = 4; // lower = faster animation
+
+    // Sprite frames per direction
+    private List<BitmapSource> frontFrames = [];
+    private List<BitmapSource> backFrames = [];
+    private List<BitmapSource> leftFrames = [];
+    private List<BitmapSource> rightFrames = [];
+
+    // Sprite sheet frame size
+    private const int spriteWidth = 224;  // width of one frame
+    private const int spriteHeight = 284; // height of one frame
+    private const double speed = 1.2;     // movement speed
 
     public MainWindow()
     {
         InitializeComponent();
-        GameField.Init(frameRate: 1, UpdateGame, isJumpAndRun: false, fixedPlayer: true);
+
+        // Register non-colliding scrolling layers
+        GameHelper.RegisterLayerTag("layer0");
+
+        // Load sprite sheet
+        spriteSheet = new BitmapImage(new Uri("pack://application:,,,/Sprites/PlayerRedSpriteMap.png"));
+
+        BuildFrames();
+
+        // Initial idle frame (facing down)
+        currentDirection = FaceDir.Down;
+        currentFrameIndex = 0;
+        Player.Source = frontFrames[currentFrameIndex];
+
+        // Start game loop
+        GameField.Init(frameRate: 20, UpdateGame, isJumpAndRun: false, fixedPlayer: true);
         Player.InitPlayer();
 
-        // Keys Registieren
+        // Register controls
         RegisterKeys();
+    }
+
+    private void BuildFrames()
+    {
+        // Build frames from sprite sheet (3 columns x 4 rows)
+        var imgFront1 = new CroppedBitmap(spriteSheet, new Int32Rect(0, 0, spriteWidth, spriteHeight));
+        var imgFront2 = new CroppedBitmap(spriteSheet, new Int32Rect(spriteWidth, 0, spriteWidth, spriteHeight));
+        var imgFront3 = new CroppedBitmap(spriteSheet, new Int32Rect(2 * spriteWidth, 0, spriteWidth, spriteHeight));
+
+        // Note: custom offsets preserved as in your code
+        var imgBack1 = new CroppedBitmap(spriteSheet, new Int32Rect(0, spriteHeight + 10, spriteWidth, spriteHeight + 10));
+        var imgBack2 = new CroppedBitmap(spriteSheet, new Int32Rect(spriteWidth - 14, spriteHeight + 10, spriteWidth - 14, spriteHeight + 10));
+        var imgBack3 = new CroppedBitmap(spriteSheet, new Int32Rect(2 * spriteWidth - 14, spriteHeight + 10, spriteWidth - 14, spriteHeight + 10));
+
+        var imgLeft1 = new CroppedBitmap(spriteSheet, new Int32Rect(0, 2 * spriteHeight + 20, spriteWidth, spriteHeight + 10));
+        var imgLeft2 = new CroppedBitmap(spriteSheet, new Int32Rect(spriteWidth - 14, 2 * spriteHeight + 20, spriteWidth - 14, spriteHeight + 10));
+        var imgLeft3 = new CroppedBitmap(spriteSheet, new Int32Rect(2 * spriteWidth - 14, 2 * spriteHeight + 20, spriteWidth - 14, spriteHeight + 10));
+
+        // Use 4-frame ping-pong for all directions for consistent modulo
+        frontFrames = [imgFront1, imgFront2, imgFront3, imgFront2];
+        backFrames  = [imgBack1,  imgBack2,  imgBack3,  imgBack2 ];
+        leftFrames  = [imgLeft1,  imgLeft2,  imgLeft3,  imgLeft2 ];
+
+        // Mirror LEFT frames to build RIGHT frames
+        rightFrames = GameHelper.MirrorFrames(leftFrames);
     }
 
     private void RegisterKeys()
     {
-        GameHelper.RegisterKeyDownAction(Key.Left, ()=>Player.MoveLeft(10));
-        GameHelper.RegisterKeyDownAction(Key.Right, () => Player.MoveRight(10));
-        GameHelper.RegisterKeyDownAction(Key.Up, () =>Player.MoveUp(10));
-        GameHelper.RegisterKeyDownAction(Key.Down, () => Player.MoveDown(10));
+        GameHelper.RegisterKeyDownAction(Key.Left,  () => StartMove(FaceDir.Left));
+        GameHelper.RegisterKeyDownAction(Key.Right, () => StartMove(FaceDir.Right));
+        GameHelper.RegisterKeyDownAction(Key.Up,    () => StartMove(FaceDir.Up));
+        GameHelper.RegisterKeyDownAction(Key.Down,  () => StartMove(FaceDir.Down));
 
-        GameHelper.RegisterKeyUpAction(Key.Left, () => Player.Stop());
-        GameHelper.RegisterKeyUpAction(Key.Right, () => Player.Stop());
-        GameHelper.RegisterKeyUpAction(Key.Up, () => Player.Stop());
-        GameHelper.RegisterKeyUpAction(Key.Down, () => Player.Stop());
-
+        GameHelper.RegisterKeyUpAction(Key.Left,  () => StopMove(FaceDir.Left));
+        GameHelper.RegisterKeyUpAction(Key.Right, () => StopMove(FaceDir.Right));
+        GameHelper.RegisterKeyUpAction(Key.Up,    () => StopMove(FaceDir.Up));
+        GameHelper.RegisterKeyUpAction(Key.Down,  () => StopMove(FaceDir.Down));
     }
+
+    private void StartMove(FaceDir dir)
+    {
+        SetDirFlag(dir, true);
+        currentDirection = dir;
+
+        switch (dir)
+        {
+            case FaceDir.Left:  Player.MoveLeft(speed);  break;
+            case FaceDir.Right: Player.MoveRight(speed); break;
+            case FaceDir.Up:    Player.MoveUp(speed);    break;
+            case FaceDir.Down:  Player.MoveDown(speed);  break;
+        }
+    }
+
+    private void StopMove(FaceDir dir)
+    {
+        SetDirFlag(dir, false);
+
+        // If any other direction is still active, keep moving in that direction
+        if (isMovingLeft || isMovingRight || isMovingUp || isMovingDown)
+        {
+            // Prefer to continue in the currentDirection if still pressed, else pick any pressed
+            if (!IsDirPressed(currentDirection))
+            {
+                if (isMovingLeft)  currentDirection = FaceDir.Left;
+                else if (isMovingRight) currentDirection = FaceDir.Right;
+                else if (isMovingUp)    currentDirection = FaceDir.Up;
+                else if (isMovingDown)  currentDirection = FaceDir.Down;
+            }
+
+            // Re-issue movement in the active direction (Stop resets speeds in the engine)
+            switch (currentDirection)
+            {
+                case FaceDir.Left:  Player.MoveLeft(speed);  break;
+                case FaceDir.Right: Player.MoveRight(speed); break;
+                case FaceDir.Up:    Player.MoveUp(speed);    break;
+                case FaceDir.Down:  Player.MoveDown(speed);  break;
+            }
+        }
+        else
+        {
+            // No direction pressed: stop world/player
+            Player.Stop();
+        }
+    }
+
+    private void SetDirFlag(FaceDir dir, bool pressed)
+    {
+        switch (dir)
+        {
+            case FaceDir.Left:  isMovingLeft  = pressed; break;
+            case FaceDir.Right: isMovingRight = pressed; break;
+            case FaceDir.Up:    isMovingUp    = pressed; break;
+            case FaceDir.Down:  isMovingDown  = pressed; break;
+        }
+    }
+
+    private bool IsDirPressed(FaceDir dir) =>
+        dir switch
+        {
+            FaceDir.Left  => isMovingLeft,
+            FaceDir.Right => isMovingRight,
+            FaceDir.Up    => isMovingUp,
+            FaceDir.Down  => isMovingDown,
+            _ => false
+        };
 
     private void UpdateGame()
     {
+        bool isMoving = isMovingLeft || isMovingRight || isMovingUp || isMovingDown;
 
+        // Select current direction frames
+        List<BitmapSource> frames = currentDirection switch
+        {
+            FaceDir.Left  => leftFrames,
+            FaceDir.Right => rightFrames,
+            FaceDir.Up    => backFrames,
+            _             => frontFrames
+        };
+
+        if (isMoving)
+        {
+            frameTick++;
+            if (frameTick >= ticksPerFrame)
+            {
+                frameTick = 0;
+                currentFrameIndex = (currentFrameIndex + 1) % frames.Count;
+            }
+        }
+        else
+        {
+            // Idle frame per direction (keep your original choices)
+            currentFrameIndex = 1;
+            frameTick = 0;
+        }
+
+        // Apply sprite once
+        Player.Source = frames[currentFrameIndex];
     }
-
-
 }
 
 // GameHelper

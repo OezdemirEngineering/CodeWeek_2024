@@ -8,8 +8,25 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Canvas Name="GameField">
-        <Rectangle x:Name="Ground1" Tag="wall" Height="100" Stroke="Black" Canvas.Left="0" Canvas.Top="341" Width="800" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <Rectangle Name="Player"  Tag="object" Stroke="Black" Canvas.Top="281" Width="50" Height="50" Canvas.Left="375" HorizontalAlignment="Center" VerticalAlignment="Top" />
-        <Rectangle x:Name="Ground1_Copy" Tag="wall" Height="100" Stroke="Black" Canvas.Left="965" Canvas.Top="341" Width="800" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image x:Name="city" Tag="layer0" gif:ImageBehavior.AnimatedSource="/Sprites/cityone.gif" gif:ImageBehavior.RepeatBehavior="0x" gif:ImageBehavior.AnimationSpeedRatio="0.90"  Height="2200"  Canvas.Top="-1100" Width="2200"  Canvas.Left="-1100">
+
+        </Image>
+
+        <Image x:Name="Player"
+           Width="64"
+           Height="64"
+           Canvas.Left="338"
+           Canvas.Top="224"
+           Stretch="Fill"
+           RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+        <Rectangle Tag="wall" Height="302" Canvas.Left="241" Canvas.Top="-101" Width="354" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Rectangle Tag="wall" Height="383" Canvas.Left="657" Canvas.Top="-43" Width="1108" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Rectangle Tag="wall" Height="882" Canvas.Left="-316" Canvas.Top="-101" Width="354" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Rectangle Tag="wall" Height="932" Canvas.Left="741" Canvas.Top="-708" Width="1108" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Rectangle Tag="wall" Height="932" Canvas.Left="-139" Canvas.Top="-1324" Width="1108" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Rectangle Tag="wall" Height="932" Canvas.Left="-316" Canvas.Top="542" Width="1108" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Rectangle Tag="wall" Height="383" Canvas.Left="729" Canvas.Top="345" Width="1108" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
     </Canvas>
 </Window>

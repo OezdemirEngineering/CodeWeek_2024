@@ -27,7 +27,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        GameField.Init( 1, UpdateGame, true);
+        GameField.Init( 10, UpdateGame, true,true);
         Pikachu.InitPlayer();
         RegisterKeys();
 

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <RootNamespace>_8_3_Game</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -10,7 +10,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Sprites\city2.gif" />
+    <None Remove="Sprites\cityone.gif" />
+    <None Remove="Sprites\PlayerRedSpriteMap.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Game.Engine\Game.Engine.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Sprites\city2.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Sprites\cityone.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Sprites\PlayerRedSpriteMap.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
