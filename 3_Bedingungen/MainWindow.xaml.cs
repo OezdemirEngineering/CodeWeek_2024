@@ -20,7 +20,7 @@ public partial class MainWindow : Window
 {
     private ImageAnimationController? controller;
     private bool isLifting = false;
-    private int frameIndex = 0;
+    private int Level = 0;
 
     public MainWindow()
     {
@@ -43,27 +43,36 @@ public partial class MainWindow : Window
         controller = ImageBehavior.GetAnimationController(Lifter);
     }
 
+    // Schreibe eine Funktion das den wert
+    // frameindex nimmt und unter score abglegt
+
     private void UpdateGame()
     {
 
         if (isLifting)
         {
             isLifting = false;
-            frameIndex+=4;
+            Level=Level + 10;
         }
 
-        // Win at frameIndex 140
+        // Win at Level 140
+        if(Level >= 140)
+        {
+            EnableWinnerText();
+        }
 
 
-        if (frameIndex < 0)
-            frameIndex = 0;
-
-        if (frameIndex >= controller.FrameCount)
-            frameIndex = controller.FrameCount - 1;
 
 
-        controller.GotoFrame(frameIndex);
-        frameIndex--;
+        if (Level < 0)
+            Level = 0;
+
+        if (Level >= controller.FrameCount)
+            Level = controller.FrameCount - 1;
+
+
+        controller.GotoFrame(Level);
+        Level--;
     }
 
     private void EnableWinnerText()

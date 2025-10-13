@@ -56,5 +56,6 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
+        <TextBlock x:Name="SizeOutput" Canvas.Left="10" TextWrapping="Wrap" Text="Size: " Canvas.Top="10" FontSize="20"/>
     </Canvas>
 </Window>

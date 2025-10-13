@@ -28,7 +28,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        GameField.Init(frameRate: 1, UpdateGame, isJumpAndRun: false);
+        GameField.Init(frameRate: 10, UpdateGame);
         Player.InitPlayer();
 
 
@@ -38,15 +38,15 @@ public partial class MainWindow : Window
 
     private void RegisterKeys()
     {
-        GameHelper.RegisterKeyDownAction(Key.W, () => Player.MoveUp(stepSize));
-        GameHelper.RegisterKeyDownAction(Key.S, () => Player.MoveDown(stepSize));
-        GameHelper.RegisterKeyDownAction(Key.A, () => Player.MoveLeft(stepSize));
-        GameHelper.RegisterKeyDownAction(Key.D, () => Player.MoveRight(stepSize));
+        GameHelper.RegisterKeyDownAction(Key.Up, () => Player.MoveUp(stepSize));
+        GameHelper.RegisterKeyDownAction(Key.Down, () => Player.MoveDown(stepSize));
+        GameHelper.RegisterKeyDownAction(Key.Left, () => Player.MoveLeft(stepSize));
+        GameHelper.RegisterKeyDownAction(Key.Right, () => Player.MoveRight(stepSize));
 
-        GameHelper.RegisterKeyUpAction(Key.W, () => Player.Stop());
-        GameHelper.RegisterKeyUpAction(Key.S, () => Player.Stop());
-        GameHelper.RegisterKeyUpAction(Key.A, () => Player.Stop());
-        GameHelper.RegisterKeyUpAction(Key.D, () => Player.Stop());
+        GameHelper.RegisterKeyUpAction(Key.Up, () => Player.Stop());
+        GameHelper.RegisterKeyUpAction(Key.Down, () => Player.Stop());
+        GameHelper.RegisterKeyUpAction(Key.Left, () => Player.Stop());
+        GameHelper.RegisterKeyUpAction(Key.Right, () => Player.Stop());
     }
 
 

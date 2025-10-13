@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Canvas Name="GameField" Background="#FFF7F7F7">
-        <TextBlock x:Name="WinnerText" Visibility="Hidden" FontSize="30" FontWeight="Bold" HorizontalAlignment="Left"   Text="Winner!!!!" VerticalAlignment="Top" Canvas.Left="313" Canvas.Top="10"/>
+        <TextBlock x:Name="WinnerText" FontSize="30" FontWeight="Bold" HorizontalAlignment="Left"   Text="Winner!!!!" VerticalAlignment="Top" Canvas.Left="313" Canvas.Top="10" Visibility="Hidden"/>
         <Image x:Name="Lifter" Source="/Images/lifter.gif" Tag="object" gif:ImageBehavior.RepeatBehavior="1x" gif:ImageBehavior.AnimationSpeedRatio="0.90"  Height="344" Canvas.Left="204"  Canvas.Top="70" Width="360" HorizontalAlignment="Center" VerticalAlignment="Center" gif:ImageBehavior.AutoStart="False"/>
         <Button x:Name="Lift" Content="Lift" Width="200" Height="35" Canvas.Left="284" Canvas.Top="336" Click="StartButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top">
             <Button.Template>
@@ -51,5 +51,6 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
+        <TextBlock x:Name="Score" Canvas.Left="49" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="30" FontSize="22"/>
     </Canvas>
 </Window>

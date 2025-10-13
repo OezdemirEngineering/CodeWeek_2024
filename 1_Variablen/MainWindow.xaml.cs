@@ -13,27 +13,42 @@ namespace _1_Variablen
         private int idleEndFrame = 14;
         private int frameIndex = 0;
 
+        public double kirbySize;
+
+
+        // Wird einmal durchlaufen , wenn das Fenster erstellt wird
         public MainWindow()
         {
             InitializeComponent();
-            GameField.Init(frameRate: 100, UpdateGame);
 
+            // Nur Gamenengine Spezifisch
+            //*******************************************
+            GameField.Init(frameRate: 100, UpdateGame);
             Loaded += OnLoaded;
+            //******************************************
+
+            kirbySize = Kirby.Height;
+            SizeOutput.Text = "Size: " + kirbySize.ToString();
         }
 
         // Feeding here!!!!!!
         //********************************************************************************
+        // Wird ausgeführt, wenn der Button geklickt wird
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             isFeeding = true;
 
+            kirbySize = kirbySize + 10;
 
             // Set new size
-            //Kirby.Width = kirbySize;
-            //Kirby.Height = kirbySize;
+            Kirby.Width = kirbySize;
+            Kirby.Height = kirbySize;
+
+            SizeOutput.Text = "Size: " + kirbySize.ToString();
 
             // Move up because of new size
-            //Kirby.StepUp(10);
+            Kirby.StepUp(7);
+            Kirby.StepLeft(5);
 
         }
         //********************************************************************************

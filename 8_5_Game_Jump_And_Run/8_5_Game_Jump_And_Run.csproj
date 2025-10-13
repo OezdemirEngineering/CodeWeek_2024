@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<RootNamespace>_8_5_Game_Jump_And_Run</RootNamespace>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Sprites\Player.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Game.Engine\Game.Engine.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Sprites\Player.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Resource>
+	</ItemGroup>
+
+</Project>
