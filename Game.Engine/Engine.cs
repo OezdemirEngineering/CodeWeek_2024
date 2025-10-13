@@ -614,23 +614,73 @@ public static class GameHelper
         for (int i = _projectiles.Count - 1; i >= 0; i--)
         {
             var projectile = _projectiles[i];
-            switch (projectile.Direction)
+
+            if (_fixedPlayer)
             {
-                case Direction.Left:
-                    StepLeft(projectile.Object, projectile.Speed);
-                    break;
-                case Direction.Right:
-                    StepRight(projectile.Object, projectile.Speed);
-                    break;
-                case Direction.Up:
-                    StepUp(projectile.Object, projectile.Speed);
-                    break;
-                case Direction.Down:
-                    StepDown(projectile.Object, projectile.Speed);
-                    break;
+                // Calculate the player's speed relative to the projectile's direction
+                double playerSpeed = 0;
+                var playerMove = _moveStates.FirstOrDefault(m => m.Object.GetTag() == "wall");
+                if (playerMove != null)
+                {
+                    switch (projectile.Direction)
+                    {
+                        case Direction.Left:
+                            playerSpeed = playerMove.IsMovingLeft ? +playerMove.Speed : (playerMove.IsMovingRight ? -playerMove.Speed : 0);
+                            break;
+                        case Direction.Right:
+                            playerSpeed = playerMove.IsMovingRight ? -playerMove.Speed : (playerMove.IsMovingLeft ? +playerMove.Speed : 0);
+                            break;
+                        case Direction.Up:
+                            playerSpeed = playerMove.IsMovingUp ? playerMove.Speed : (playerMove.IsMovingDown ? -playerMove.Speed : 0);
+                            break;
+                        case Direction.Down:
+                            playerSpeed = playerMove.IsMovingDown ? -playerMove.Speed : (playerMove.IsMovingUp ? +playerMove.Speed : 0);
+                            break;
+                    }
+                }
+
+                // The projectile's movement relative to the world (do not move the world, just the projectile)
+                double effectiveSpeed = projectile.Speed - playerSpeed;
+
+
+                // Move the projectile object itself (do NOT move the world)
+                switch (projectile.Direction)
+                {
+                    case Direction.Left:
+                        SetPosition(projectile.Object, GetPosition(projectile.Object).X - effectiveSpeed, GetPosition(projectile.Object).Y);
+                        break;
+                    case Direction.Right:
+                        SetPosition(projectile.Object, GetPosition(projectile.Object).X + effectiveSpeed, GetPosition(projectile.Object).Y);
+                        break;
+                    case Direction.Up:
+                        SetPosition(projectile.Object, GetPosition(projectile.Object).X, GetPosition(projectile.Object).Y - effectiveSpeed);
+                        break;
+                    case Direction.Down:
+                        SetPosition(projectile.Object, GetPosition(projectile.Object).X, GetPosition(projectile.Object).Y + effectiveSpeed);
+                        break;
+                }
+            }
+            else
+            {
+                // Normal mode: move the projectile itself
+                switch (projectile.Direction)
+                {
+                    case Direction.Left:
+                        StepLeft(projectile.Object, projectile.Speed);
+                        break;
+                    case Direction.Right:
+                        StepRight(projectile.Object, projectile.Speed);
+                        break;
+                    case Direction.Up:
+                        StepUp(projectile.Object, projectile.Speed);
+                        break;
+                    case Direction.Down:
+                        StepDown(projectile.Object, projectile.Speed);
+                        break;
+                }
             }
 
-            // Entferne das Projektil, wenn es aus dem Spielfeld heraus ist
+            // Remove the projectile if it is out of bounds
             if (IsOutOfBounds(projectile.Object))
             {
                 _gameField.Children.Remove(projectile.Object);

@@ -30,7 +30,9 @@ public partial class MainWindow : Window
         GameField.Init( 10, UpdateGame, true,true);
         Pikachu.InitPlayer();
         RegisterKeys();
+        GameHelper.RegisterLayerTag("enemy");
 
+        
     }
 
     private void RegisterKeys()
@@ -38,7 +40,7 @@ public partial class MainWindow : Window
         GameHelper.RegisterKeyDownAction(Key.Left, () => { Pikachu.MoveLeft(10);Pikachu.StartAnimation();Pikachu.MirrorRight(); });
         GameHelper.RegisterKeyDownAction(Key.Right, () => { Pikachu.MoveRight(10); Pikachu.StartAnimation();Pikachu.MirrorLeft(); });
         GameHelper.RegisterKeyDownAction(Key.Space, () => Pikachu.Jump(20, 20));
-        GameHelper.RegisterKeyDownAction(Key.S, () => Pikachu.Shoot(energy,"shoot",10,Direction.Left));
+        GameHelper.RegisterKeyDownAction(Key.S, () => Pikachu.Shoot(energy,"shoot",5,Direction.Right));
 
 
         GameHelper.RegisterKeyUpAction(Key.Left, () => { Pikachu.Stop();Pikachu.StopAnimation(); });
@@ -50,6 +52,19 @@ public partial class MainWindow : Window
 
     private void UpdateGame()
     {
+        // Only in fixed player mode to move a target relative to the player
+        Enemy.SetPosition(Enemy.GetPosition().X - 1, Enemy.GetPosition().Y);
+
+        if (Pikachu.IsTagCollidingWithRemove("enemy"))
+        {
+
+        }
+
+        if(Enemy.IsTagCollidingWithRemove("shoot"))
+        {
+            Enemy.SetPosition(800, Enemy.GetPosition().Y);
+        }
+
         // Endless ground scrolling logic for "ground1" and "ground2"
         double groundWidth = Ground1.RenderSize.Width;
         double canvasWidth = GameField.ActualWidth;
