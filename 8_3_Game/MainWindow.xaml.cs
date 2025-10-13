@@ -70,17 +70,17 @@ public partial class MainWindow : Window
         var nHeight = spriteSheet.PixelHeight / 4 + 4;
 
         // Build frames from sprite sheet (3 columns x 4 rows)
-        var imgFront1 = new CroppedBitmap(spriteSheet, new Int32Rect(0, 0, nWidth, nHeight));
-        var imgFront2 = new CroppedBitmap(spriteSheet, new Int32Rect(nWidth, 0, nWidth, nHeight));
-        var imgFront3 = new CroppedBitmap(spriteSheet, new Int32Rect(2 * nWidth, 0, nWidth, nHeight));
+        var imgFront1 = new CroppedBitmap(spriteSheet, new(0, 0, nWidth, nHeight));
+        var imgFront2 = new CroppedBitmap(spriteSheet, new(nWidth, 0, nWidth, nHeight));
+        var imgFront3 = new CroppedBitmap(spriteSheet, new(2 * nWidth, 0, nWidth, nHeight));
 
-        var imgBack1 = new CroppedBitmap(spriteSheet, new Int32Rect(0, nHeight, nWidth, nHeight));
-        var imgBack2 = new CroppedBitmap(spriteSheet, new Int32Rect(nWidth, nHeight, nWidth, nHeight));
-        var imgBack3 = new CroppedBitmap(spriteSheet, new Int32Rect(2 * nWidth, nHeight, nWidth, nHeight));
+        var imgBack1 = new CroppedBitmap(spriteSheet, new(0, nHeight, nWidth, nHeight));
+        var imgBack2 = new CroppedBitmap(spriteSheet, new(nWidth, nHeight, nWidth, nHeight));
+        var imgBack3 = new CroppedBitmap(spriteSheet, new(2 * nWidth, nHeight, nWidth, nHeight));
 
-        var imgLeft1 = new CroppedBitmap(spriteSheet, new Int32Rect(0, 2 * nHeight, nWidth, nHeight));
-        var imgLeft2 = new CroppedBitmap(spriteSheet, new Int32Rect(nWidth, 2 * nHeight, nWidth, nHeight));
-        var imgLeft3 = new CroppedBitmap(spriteSheet, new Int32Rect(2 * nWidth, 2 * nHeight, nWidth, nHeight));
+        var imgLeft1 = new CroppedBitmap(spriteSheet, new(0, 2 * nHeight, nWidth, nHeight));
+        var imgLeft2 = new CroppedBitmap(spriteSheet, new(nWidth, 2 * nHeight, nWidth, nHeight));
+        var imgLeft3 = new CroppedBitmap(spriteSheet, new(2 * nWidth, 2 * nHeight, nWidth, nHeight));
 
         // Use 4-frame ping-pong for all directions for consistent modulo
         frontFrames = [imgFront1, imgFront2, imgFront3, imgFront2];
