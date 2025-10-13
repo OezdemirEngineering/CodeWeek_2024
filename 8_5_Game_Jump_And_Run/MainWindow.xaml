@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Canvas Name="GameField">
-        <Image x:Name="Player" Tag="object" Height="103" Canvas.Left="37"  Canvas.Top="228" Width="145" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Image x:Name="Player" Tag="object" Height="56" Canvas.Left="370"  Canvas.Top="275" Width="61" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Rectangle x:Name="Ground1" Tag="wall" Height="100" Stroke="Black" Canvas.Left="0" Canvas.Top="341" Width="800" HorizontalAlignment="Left" VerticalAlignment="Center" />
         <Rectangle x:Name="Ground2" Tag="wall" Height="100" Stroke="Black" Canvas.Top="341" Width="800" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="805" />
     </Canvas>

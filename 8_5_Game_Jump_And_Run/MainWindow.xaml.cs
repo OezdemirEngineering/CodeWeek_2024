@@ -31,12 +31,12 @@ namespace _8_5_Game_Jump_And_Run
         public MainWindow()
         {
             InitializeComponent();
-            GameField.Init(frameRate: 20, UpdateGame, isJumpAndRun: true, fixedPlayer: true);
+            GameField.Init(frameRate: 40, UpdateGame, isJumpAndRun: true, fixedPlayer: true);
             Player.InitPlayer();
             spriteSheet = new BitmapImage(new Uri("pack://application:,,,/Sprites/Player.png"));
             
-            var nWidth = (int)spriteSheet.PixelWidth / 8;
-            var nHeight = (int)spriteSheet.PixelHeight / 9;
+            var nWidth = spriteSheet.PixelWidth / 8;
+            var nHeight = spriteSheet.PixelHeight / 9;
 
             Player.Width = nWidth;
             Player.Height = nHeight;
