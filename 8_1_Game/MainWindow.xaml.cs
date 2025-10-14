@@ -67,6 +67,7 @@ public partial class MainWindow : Window
         if (Player.IsColliding(Coin3))
         {
             Coin3.Visibility = Visibility.Hidden;
+            Enemy.Tag = "wall";
         }
 
         if(Player.IsTagCollidingWithRemove("coin"))

@@ -8,8 +8,8 @@
         Title="MainWindow" Height="450" Width="800">
     <Canvas x:Name="GameField" >
         <Ellipse x:Name="Ball" Height="100" Canvas.Left="350" Stroke="Black" Canvas.Top="167" Width="100"/>
-        <Rectangle x:Name="WallLeft" Height="262" Canvas.Left="60" Stroke="Black" Canvas.Top="86" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Rectangle x:Name="WallRight" Height="262" Canvas.Left="630" Stroke="Black" Canvas.Top="86" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Rectangle x:Name="WallLeft" Height="262" Canvas.Left="60" Stroke="Black" Canvas.Top="86" Width="48" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Rectangle x:Name="WallRight" Height="262" Canvas.Left="688" Stroke="Black" Canvas.Top="86" Width="42" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
     </Canvas>
 </Window>

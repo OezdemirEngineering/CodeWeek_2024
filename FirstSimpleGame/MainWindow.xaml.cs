@@ -1,4 +1,5 @@
 ﻿using Game;
+using System.Numerics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +24,18 @@ namespace FirstSimpleGame
         {
             InitializeComponent();
             GameField.Init(frameRate: 10, UpdateGame);
+
+            RegisterKeys();
+        }
+
+        private void RegisterKeys()
+        {
+            GameHelper.RegisterKeyDownAction(Key.Up, () => WallRight.MoveUp(10));
+            GameHelper.RegisterKeyDownAction(Key.Down, () => WallRight.MoveDown(10));
+
+
+            GameHelper.RegisterKeyUpAction(Key.Up, () => WallRight.Stop());
+            GameHelper.RegisterKeyUpAction(Key.Down, () => WallRight.Stop());
         }
 
         private void UpdateGame()
