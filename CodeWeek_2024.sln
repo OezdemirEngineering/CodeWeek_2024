@@ -39,6 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basics", "Basics", "{E5DA4C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "8_5_Game_Jump_And_Run", "8_5_Game_Jump_And_Run\8_5_Game_Jump_And_Run.csproj", "{6350F971-C2EE-47E7-B53E-54BB8A55D75E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstSimpleGame", "FirstSimpleGame\FirstSimpleGame.csproj", "{73BC90E8-FB6D-47DA-9681-2B80EE992583}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -183,6 +185,14 @@ Global
 		{6350F971-C2EE-47E7-B53E-54BB8A55D75E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6350F971-C2EE-47E7-B53E-54BB8A55D75E}.Release|x64.ActiveCfg = Release|Any CPU
 		{6350F971-C2EE-47E7-B53E-54BB8A55D75E}.Release|x64.Build.0 = Release|Any CPU
+		{73BC90E8-FB6D-47DA-9681-2B80EE992583}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73BC90E8-FB6D-47DA-9681-2B80EE992583}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73BC90E8-FB6D-47DA-9681-2B80EE992583}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{73BC90E8-FB6D-47DA-9681-2B80EE992583}.Debug|x64.Build.0 = Debug|Any CPU
+		{73BC90E8-FB6D-47DA-9681-2B80EE992583}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73BC90E8-FB6D-47DA-9681-2B80EE992583}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73BC90E8-FB6D-47DA-9681-2B80EE992583}.Release|x64.ActiveCfg = Release|Any CPU
+		{73BC90E8-FB6D-47DA-9681-2B80EE992583}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

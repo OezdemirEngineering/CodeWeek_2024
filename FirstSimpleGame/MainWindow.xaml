@@ -1,0 +1,15 @@
+﻿<Window x:Class="FirstSimpleGame.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FirstSimpleGame"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Canvas x:Name="GameField" >
+        <Ellipse x:Name="Ball" Height="100" Canvas.Left="350" Stroke="Black" Canvas.Top="167" Width="100"/>
+        <Rectangle x:Name="WallLeft" Height="262" Canvas.Left="60" Stroke="Black" Canvas.Top="86" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Rectangle x:Name="WallRight" Height="262" Canvas.Left="630" Stroke="Black" Canvas.Top="86" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+    </Canvas>
+</Window>
