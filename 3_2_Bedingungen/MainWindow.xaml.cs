@@ -305,24 +305,55 @@ public partial class MainWindow : Window
 
     private void MoveGhosts()
     {
+        // Pacman-Position holen
+        var pacPos = pacman.GetPosition();
+
         foreach (var ghost in ghosts)
         {
-            if (!ghostDirs.ContainsKey(ghost) || rnd.NextDouble() < 0.02)
-                ghostDirs[ghost] = rnd.Next(0, 4);
+            // Ghost-Position holen
+            var ghostPos = ghost.GetPosition();
 
-            int dir = ghostDirs[ghost];
-            double speed = 2.0;
-
-            switch (dir)
+            // Map-Definition holen (aus BuildLevel kopieren)
+            string[] map =
             {
-                case 0: ghost.StepRight(speed); break;
-                case 1: ghost.StepDown(speed); break;
-                case 2: ghost.StepLeft(speed); break;
-                case 3: ghost.StepUp(speed); break;
-            }
+                "##############################",
+                "#............................#",
+                "#...............G............#",
+                "#............................#",
+                "#.....###....###....####.....#",
+                "#....#......#.......#...#....#",
+                "#....#.......###....####.....#",
+                "#....#..........#...#...#....#",
+                "#....#......#...#...#...#....#",
+                "#.....###....###....####.....#",
+                "#............................#",
+                "#...G...........P............#",
+                "#............................#",
+                "#.......G..............G.....#",
+                "#............................#",
+                "##############################"
+            };
 
-            if (ghost.IsCollidingToWall())
-                ghostDirs[ghost] = (dir + 2) % 4;
+            // Pfad berechnen
+            var path = FindPath(ghostPos, pacPos, map);
+
+            // Wenn Pfad existiert und mindestens ein Schritt vorhanden ist
+            if (path.Count > 0)
+            {
+                // Nächsten Schritt bestimmen
+                var next = path[0];
+                double speed = 2.0;
+
+                // Richtung berechnen
+                double dx = next.X - ghostPos.X;
+                double dy = next.Y - ghostPos.Y;
+                double dist = Math.Sqrt(dx * dx + dy * dy);
+                if (dist > 0.01)
+                {
+                    double step = Math.Min(speed, dist);
+                    ghost.SetPosition(ghostPos.X + dx / dist * step, ghostPos.Y + dy / dist * step);
+                }
+            }
 
             if (ghost.IsColliding(pacman))
             {
@@ -331,4 +362,77 @@ public partial class MainWindow : Window
             }
         }
     }
+
+    /// <summary>
+    /// Berechnet den kürzesten Pfad (BFS) von Start zu Ziel in einer Pac-Man-Map.
+    /// '#' = Wand, alles andere begehbar.
+    /// </summary>
+    private List<Point> FindPath(Point start, Point goal, string[] map, double tileSize = 30, double yOffset = 40)
+    {
+        int width = map[0].Length;
+        int height = map.Length;
+
+        // Richtung: rechts, links, unten, oben
+        var dirs = new (int dx, int dy)[] { (1, 0), (-1, 0), (0, 1), (0, -1) };
+
+        // Position -> Gitterkoordinaten
+        Point ToGrid(Point p)
+        {
+            int gx = (int)(p.X / tileSize);
+            int gy = (int)((p.Y - yOffset) / tileSize);
+            gx = Math.Clamp(gx, 0, width - 1);
+            gy = Math.Clamp(gy, 0, height - 1);
+            return new Point(gx, gy);
+        }
+
+        var startGrid = ToGrid(start);
+        var goalGrid = ToGrid(goal);
+
+        var queue = new Queue<Point>();
+        var cameFrom = new Dictionary<Point, Point>();
+        queue.Enqueue(startGrid);
+        cameFrom[startGrid] = startGrid;
+
+        while (queue.Count > 0)
+        {
+            var current = queue.Dequeue();
+            if (current.Equals(goalGrid))
+                break;
+
+            foreach (var (dx, dy) in dirs)
+            {
+                int nx = (int)current.X + dx;
+                int ny = (int)current.Y + dy;
+
+                // Innerhalb Karte und kein Wandfeld?
+                if (nx >= 0 && ny >= 0 && nx < width && ny < height)
+                {
+                    if (map[ny][nx] != '#' && !cameFrom.ContainsKey(new Point(nx, ny)))
+                    {
+                        var next = new Point(nx, ny);
+                        cameFrom[next] = current;
+                        queue.Enqueue(next);
+                    }
+                }
+            }
+        }
+
+        // Kein Pfad gefunden
+        if (!cameFrom.ContainsKey(goalGrid))
+            return new List<Point>();
+
+        // Rückverfolgung
+        var path = new List<Point>();
+        var cur = goalGrid;
+        while (!cur.Equals(startGrid))
+        {
+            path.Add(cur);
+            cur = cameFrom[cur];
+        }
+        path.Reverse();
+
+        // Grid -> Canvas-Koordinaten umwandeln
+        return path.Select(p => new Point(p.X * tileSize, p.Y * tileSize + yOffset)).ToList();
+    }
+
 }
