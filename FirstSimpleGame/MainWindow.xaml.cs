@@ -32,8 +32,6 @@ namespace FirstSimpleGame
         {
             GameHelper.RegisterKeyDownAction(Key.Up, () => WallRight.MoveUp(10));
             GameHelper.RegisterKeyDownAction(Key.Down, () => WallRight.MoveDown(10));
-
-
             GameHelper.RegisterKeyUpAction(Key.Up, () => WallRight.Stop());
             GameHelper.RegisterKeyUpAction(Key.Down, () => WallRight.Stop());
         }

@@ -22,6 +22,14 @@ public partial class MainWindow : Window
     private bool isLifting = false;
     private int Level = 0;
 
+
+    public bool WinnerTextVisbility
+    {
+        set => WinnerText.Visibility = value ? Visibility.Visible : Visibility.Hidden;
+        get => WinnerText.Visibility == Visibility.Visible;
+    }
+
+
     public MainWindow()
     {
         InitializeComponent();
@@ -55,11 +63,8 @@ public partial class MainWindow : Window
             Level=Level + 10;
         }
 
-        // Win at Level 140
-        if(Level >= 140)
-        {
-            EnableWinnerText();
-        }
+        // Win at Level 140 , WinnerTextVisibility makes the text visible if is set to true 
+
 
 
 
@@ -75,8 +80,4 @@ public partial class MainWindow : Window
         Level--;
     }
 
-    private void EnableWinnerText()
-    {
-        WinnerText.Visibility = Visibility.Visible;
-    }
 }

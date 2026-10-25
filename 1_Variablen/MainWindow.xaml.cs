@@ -38,7 +38,6 @@ namespace _1_Variablen
         {
             isFeeding = true;
 
-            kirbySize = kirbySize + 10;
 
             // Set new size
             Kirby.Width = kirbySize;

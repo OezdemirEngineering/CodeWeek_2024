@@ -60,9 +60,9 @@ public partial class MainWindow : Window
         MoveGhosts();
         //*******************************************************************
         // Todo detect collision with coins
-        //pacman.IsTagCollidingWithRemove("tag name") give true
+        //pacman.IsTagCollidingWithRemove("coin") give true
         //if collision and removes the object with the tag
-        // increase score by 10
+        // increase score by 10 
         //*******************************************************************
 
     }
